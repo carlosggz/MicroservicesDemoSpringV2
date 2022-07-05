@@ -1,0 +1,34 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: movies-api
+  cloud:
+    stream:
+      bindings:
+        like-out-0:
+          destination: movies
+          content-type: application/json
+          binder: rabbit
+      rabbit:
+        bindings:
+          like-out-0:
+            producer:
+              routing-key-expression: headers.myRoutingKey
+
+
+#Swagger properties
+springdoc:
+  swagger-ui:
+    path: /swagger/info.html
+    enabled: ${app.allow-swagger}
+  api-docs:
+    path: /v3/api-docs
+    enabled: ${app.allow-swagger}
+
+#App properties
+app:
+  allow-swagger: ${ALLOW_SWAGGER_UI:true}
+  security:
+    ignore-paths: /swagger/**,/v3/api-docs/**

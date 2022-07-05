@@ -1,0 +1,11 @@
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWIV', 'Star wars IV: A new hope', 0, 1977, 'tt0076759');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWV', 'Star wars V: The empire strikes back', 0, 1980, 'tt0080684');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWVI', 'Star wars VI: Return of the Jedi', 0, 1983, 'tt0086190');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWVII', 'Star wars VII: The force awakens', 0, 2015, 'tt2488496');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWII', 'Star wars II: Attack of the Clones', 0, 2002, 'tt0121765');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWI', 'Star wars I: The phantom menace', 0, 1999, 'tt0120915');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWIII', 'Star wars III: Revenge of the sith', 3, 2005, 'tt0121766');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('ROGUE', 'Rogue One: A star wars story', 0, 2016, 'tt3748528');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SOLO', 'Solo: A star wars history', 0, 2018, 'tt3778644');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWVIII', 'Star wars VIII: The last jedi', 2, 2017, 'tt2527336');
+INSERT INTO movies (id, title, likes, release_year, imdb) VALUES ('SWIX', 'Star wars IX: The rise of Skywalker', 0, 2019, 'tt2527338');
