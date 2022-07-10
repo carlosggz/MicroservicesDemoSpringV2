@@ -1,3 +1,4 @@
 rootProject.name = 'MicroservicesDemoSpringV2'
 
 include 'movies-api'
+include 'actors-api'

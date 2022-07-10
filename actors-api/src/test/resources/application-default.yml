@@ -1,0 +1,7 @@
+mongock:
+  enabled: false
+
+spring:
+  mongodb:
+    embedded:
+      version: 5.0.6

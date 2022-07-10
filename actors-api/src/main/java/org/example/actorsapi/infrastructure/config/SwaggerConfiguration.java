@@ -1,4 +1,4 @@
-package org.example.moviesapi.infrastructure.config;
+package org.example.actorsapi.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnProperty(value = "${springdoc.swagger-ui.enabled}", havingValue = "true", matchIfMissing = true)
-public class SwaggerConfig {
+public class SwaggerConfiguration {
 
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Movies API")
-                        .description("Movies API Example")
+                        .title("Actors API")
+                        .description("Actors API Example")
                         .version("v0.0.1")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org"))
                 );

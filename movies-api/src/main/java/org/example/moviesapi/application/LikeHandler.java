@@ -6,13 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.example.moviesapi.domain.events.EventsPublisher;
 import org.example.moviesapi.domain.events.LikeMovieEvent;
 import org.example.moviesapi.domain.movies.MoviesRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotNull;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class LikeHandler implements Command.Handler<LikeCommand, Boolean> {
 
     final MoviesRepository repository;

@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,12 +33,14 @@ public class MoviesIntegrationTest {
     @Test
     void getMoviesReturnsAListOfDtos() {
         //given
-        var expectedResult = new Random()
-                .ints(5)
-                .mapToObj(x -> MoviesObjectMother.getRandomDbEntity())
+        var expectedResult = Stream.of(
+                        MoviesObjectMother.getRandomDbEntity(),
+                        MoviesObjectMother.getRandomDbEntity(),
+                        MoviesObjectMother.getRandomDbEntity()
+                )
                 .peek(crudRepository::save)
                 .map(MovieMapper.INSTANCE::toDto)
-                .collect(Collectors.toList());
+                .toList();
 
         //when
         var result = handler.handle(new MoviesQuery());

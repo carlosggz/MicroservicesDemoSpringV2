@@ -8,7 +8,7 @@ spring:
     stream:
       bindings:
         like-out-0:
-          destination: movies
+          destination: movies-topic
           content-type: application/json
           binder: rabbit
       rabbit:
@@ -21,7 +21,7 @@ spring:
 #Swagger properties
 springdoc:
   swagger-ui:
-    path: /swagger/info.html
+    path: /
     enabled: ${app.allow-swagger}
   api-docs:
     path: /v3/api-docs

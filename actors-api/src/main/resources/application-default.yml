@@ -1,0 +1,27 @@
+spring:
+  data:
+    mongodb:
+      host: ${app.mongo.host}
+      port: ${app.mongo.port}
+      database: ${app.mongo.database}
+      username: ${app.mongo.username}
+      password: ${app.mongo.password}
+      authentication-database: ${app.mongo.authentication-database}
+      uri: mongodb://${app.mongo.username}:${app.mongo.password}@${app.mongo.host}:${app.mongo.port}/${app.mongo.uri-suffix}
+  rabbitmq:
+    username: myuser
+    password: mypass
+    host: localhost
+    port: 5672
+    virtual-host: /
+
+app:
+  mongo:
+    host: localhost
+    port: 27017
+    database: test
+    username: myuser
+    password: mypass
+    authentication-database: admin
+    uri-suffix: ?retryWrites=false
+    transaction-enabled: false

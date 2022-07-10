@@ -8,8 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,10 +32,11 @@ class MoviesHandlerTest {
     @Test
     void getMoviesReturnsAList() {
         //given
-        var entities = new Random()
-                .ints(5)
-                .mapToObj(x -> MoviesObjectMother.getRandomDto())
-                .collect(Collectors.toList());
+        var entities = List.of(
+                MoviesObjectMother.getRandomDto(),
+                MoviesObjectMother.getRandomDto(),
+                MoviesObjectMother.getRandomDto()
+        );
         when(repository.getAll()).thenReturn(entities);
 
         //when
@@ -46,7 +46,7 @@ class MoviesHandlerTest {
         assertNotNull(result);
         assertEquals(entities.size(), result.size());
 
-        for(var index = 0; index < entities.size(); index++) {
+        for (var index = 0; index < entities.size(); index++) {
             assertEquals(entities.get(index), result.get(index));
         }
     }

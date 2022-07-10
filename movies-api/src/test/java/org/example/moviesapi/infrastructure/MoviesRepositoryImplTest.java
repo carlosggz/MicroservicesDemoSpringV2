@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,12 +37,14 @@ class MoviesRepositoryImplTest {
     @Test
     void getAllReturnsAllEntitiesOnDatabase() {
         //given
-        var dtos = new Random()
-                .ints(5)
-                .mapToObj(x -> MoviesObjectMother.getRandomDbEntity())
+        var dtos = Stream.of(
+                        MoviesObjectMother.getRandomDbEntity(),
+                        MoviesObjectMother.getRandomDbEntity(),
+                        MoviesObjectMother.getRandomDbEntity()
+                )
                 .peek(crudRepository::save)
                 .map(MovieMapper.INSTANCE::toDto)
-                .collect(Collectors.toList());
+                .toList();
 
         //when
         var result = moviesRepository.getAll();

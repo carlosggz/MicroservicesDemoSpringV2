@@ -1,13 +1,13 @@
 version: '3'
 
 services:
-  db:
+  postgres:
     image: "postgres"
     ports:
       - "5433:5432"
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypass
       - POSTGRES_DB=postgres
   rabbitmq:
     image: rabbitmq:3.8.5-management-alpine
@@ -17,3 +17,11 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=myuser
       - RABBITMQ_DEFAULT_PASS=mypass
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=myuser
+      - MONGO_INITDB_ROOT_PASSWORD=mypass
+    ports:
+      - "27017:27017"

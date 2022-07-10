@@ -1,0 +1,114 @@
+[
+    {
+        "id": "ANAKIN",
+        "firstName": "Hayden",
+        "lastName": "Christensen",
+        "character": "Anakin Skywalker",
+        "likes": 0,
+        "movies": ["SWI", "SWII", "SWIII"]
+    },
+    {
+        "id": "KENOBI",
+        "firstName": "Ewan",
+        "lastName": "McGregor",
+        "character": "Obi-Wan Kenobi",
+        "likes": 0,
+        "movies": ["SWI", "SWII", "SWIII"]
+    },
+    {
+        "id": "WINDU",
+        "firstName": "Samuel",
+        "lastName": "L. Jackson",
+        "character": "Mace Windu",
+        "likes": 0,
+        "movies": ["SWI", "SWII", "SWIII"]
+    },
+    {
+        "id": "QUI-GON",
+        "firstName": "Liam",
+        "lastName": "Neeson",
+        "character": "Qui-Gon Jinn",
+        "likes": 0,
+        "movies": ["SWI"]
+    },
+    {
+        "id": "AMIDALA",
+        "firstName": "Natalie",
+        "lastName": "Portman",
+        "character": "Queen Amidala",
+        "likes": 0,
+        "movies": ["SWI", "SWII", "SWIII"]
+    },
+    {
+        "id": "FETT",
+        "firstName": "Temuera",
+        "lastName": "Morrison",
+        "character": "Jango Fett",
+        "likes": 0,
+        "movies": ["SWII"]
+    },
+    {
+        "id": "ORGANA",
+        "firstName": "Jimmy",
+        "lastName": "Smits",
+        "character": "Senator Bail Organa",
+        "likes": 0,
+        "movies": ["SWII"]
+    },
+    {
+        "id": "LUKE",
+        "firstName": "Mark",
+        "lastName": "Hamill",
+        "character": "Luke Skywalker",
+        "likes": 0,
+        "movies": ["SWIV", "SWV", "SWVI", "SWVII", "SWVIII", "SWIX"]
+    },
+    {
+        "id": "SOLO",
+        "firstName": "Harrison",
+        "lastName": "Ford",
+        "character": "Han Solo",
+        "likes": 0,
+        "movies": ["SWIV", "SWV", "SWVI", "SWVII"]
+    },
+    {
+        "id": "PRINCESS",
+        "firstName": "Carrie",
+        "lastName": "Fisher",
+        "character": "Princess Leia Organa",
+        "likes": 0,
+        "movies": ["SWIV", "SWV", "SWVI", "SWVII", "SWVIII", "SWIX"]
+    },
+    {
+        "id": "LANDO",
+        "firstName": "Billy",
+        "lastName": "Dee Williams",
+        "character": "Lando Calrissian",
+        "likes": 0,
+        "movies": ["SWV", "SWVI", "SWIX"]
+    },
+    {
+        "id": "EMPERATOR",
+        "firstName": "Ian",
+        "lastName": "McDiarmid",
+        "character": "The Emperor",
+        "likes": 0,
+        "movies": ["SWVI", "SWIX"]
+    },
+    {
+        "id": "REY",
+        "firstName": "Daisy",
+        "lastName": "Ridley",
+        "character": "Rey",
+        "likes": 0,
+        "movies": ["SWVII", "SWVIII", "SWIX"]
+    },
+    {
+        "id": "FINN",
+        "firstName": "John",
+        "lastName": "Ridley",
+        "character": "Boyega",
+        "likes": 0,
+        "movies": ["SWVII", "SWVIII", "SWIX"]
+    }
+]

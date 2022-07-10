@@ -20,8 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,10 +53,11 @@ class MoviesControllerTest {
     @SneakyThrows
     void getAllMoviesReturnsAListOfMovies() {
         //given
-        var dtos = new Random()
-                .ints(5)
-                .mapToObj(x -> MoviesObjectMother.getRandomDto())
-                .collect(Collectors.toList());
+        var dtos = List.of(
+                MoviesObjectMother.getRandomDto(),
+                MoviesObjectMother.getRandomDto(),
+                MoviesObjectMother.getRandomDto()
+        );
         when(pipeline.send(any(MoviesQuery.class))).thenReturn(dtos);
 
         //when/then
