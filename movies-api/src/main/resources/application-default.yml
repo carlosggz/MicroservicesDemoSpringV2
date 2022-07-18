@@ -24,3 +24,12 @@ spring:
     host: localhost
     port: 5672
     virtual-host: /
+
+app:
+  port: 8081
+  allow-swagger: true
+  eureka:
+    host: localhost
+    port: 8761
+    username: myuser
+    password: mypass

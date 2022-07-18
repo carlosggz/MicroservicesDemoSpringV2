@@ -1,0 +1,12 @@
+server.port: ${app.eureka.port}
+
+eureka.client:
+  register-with-eureka: false
+  fetch-registry: false
+  service-url:
+    defaultZone: http://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
+spring:
+  security:
+    user:
+      name: ${app.eureka.username}
+      password: ${app.eureka.password}

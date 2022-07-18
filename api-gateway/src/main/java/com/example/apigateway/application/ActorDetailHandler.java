@@ -5,23 +5,21 @@ import com.example.apigateway.domain.Actor;
 import com.example.apigateway.domain.ActorDetails;
 import com.example.apigateway.domain.AppSettings;
 import com.example.apigateway.domain.Movie;
-import com.example.apigateway.domain.SearchCriteriaDto;
+import com.example.apigateway.domain.components.ActorComponent;
+import com.example.apigateway.domain.components.MovieComponent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +27,8 @@ import java.util.stream.Collectors;
 public class ActorDetailHandler implements Command.Handler<ActorDetailsQuery, Mono<ActorDetails>> {
 
     private final AppSettings appSettings;
-    private final WebClient moviesWebClient;
-    private final WebClient actorsWebClient;
+    private final ActorComponent actorComponent;
+    private final MovieComponent movieComponent;
 
     @Override
     public Mono<ActorDetails> handle(@NotNull ActorDetailsQuery command) {
@@ -39,8 +37,10 @@ public class ActorDetailHandler implements Command.Handler<ActorDetailsQuery, Mo
                 return Mono.error(new IllegalArgumentException());
         }
 
-        return getActor(command.getId())
-                .zipWhen(x -> getMovies(x.getMovies()))
+        return actorComponent.getActor(command.getId())
+                .zipWhen(x -> movieComponent
+                        .getMovies(x.getMovies())
+                        .collectList())
                 .map(x -> getDetails(x.getT1(), x.getT2()))
                 .timeout(Duration.ofSeconds(appSettings.getTimeoutSeconds()))
                 .retryWhen(Retry
@@ -52,33 +52,17 @@ public class ActorDetailHandler implements Command.Handler<ActorDetailsQuery, Mo
                 );
     }
 
-    private ActorDetails getDetails(Actor actor, Set<Movie> movies) {
+    private ActorDetails getDetails(Actor actor, Collection<Movie> movies) {
         return ActorDetails.builder()
                 .id(actor.getId())
                 .firstName(actor.getFirstName())
                 .lastName(actor.getLastName())
                 .character(actor.getCharacter())
                 .likes(actor.getLikes())
-                .movies(movies)
+                .movies(Set.copyOf(movies))
                 .build();
     }
-    private Mono<Actor> getActor(String id) {
-        return actorsWebClient
-                .get()
-                .uri(appSettings.getActorDetailsPath().replace("{ACTOR-ID}", id))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(Actor.class);
-    }
 
-    private Mono<Set<Movie>> getMovies(Set<String> movieCodes) {
-        return moviesWebClient
-                .post()
-                .uri(appSettings.getMoviesSearchPath())
-                .body((BodyInserters.fromValue(SearchCriteriaDto.builder().ids(movieCodes).build())))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux(Movie.class)
-                .collect(Collectors.toSet());
-    }
+
+
 }

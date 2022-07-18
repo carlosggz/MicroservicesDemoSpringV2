@@ -5,3 +5,20 @@ spring:
   mongodb:
     embedded:
       version: 5.0.6
+
+#Eureka
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+
+spring.cloud.discovery.enabled: false
+
+app:
+  port: 8082
+  allow-swagger: false
+  eureka:
+    host: localhost
+    port: 1234
+    username: test
+    password: test

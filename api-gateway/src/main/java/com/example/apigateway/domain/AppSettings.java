@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @NoArgsConstructor
 public class AppSettings {
-    private String moviesUrl;
-    private String actorsUrl;
+    private String moviesService;
+    private String actorsService;
     private String moviesSearchPath;
     private String actorDetailsPath;
     private long timeoutSeconds;

@@ -25,3 +25,11 @@ app:
     authentication-database: admin
     uri-suffix: ?retryWrites=false
     transaction-enabled: false
+  port: 8082
+  allow-swagger: true
+  eureka:
+    host: localhost
+    port: 8761
+    username: myuser
+    password: mypass
+

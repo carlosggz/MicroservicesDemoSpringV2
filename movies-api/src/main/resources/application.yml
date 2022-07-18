@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: ${app.port}
 
 spring:
   application:
@@ -17,6 +17,15 @@ spring:
             producer:
               routing-key-expression: headers.myRoutingKey
 
+#Eureka
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
+
+spring.cloud.discovery.enabled: true
 
 #Swagger properties
 springdoc:
@@ -29,6 +38,5 @@ springdoc:
 
 #App properties
 app:
-  allow-swagger: ${ALLOW_SWAGGER_UI:true}
   security:
     ignore-paths: /swagger/**,/v3/api-docs/**
