@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface MoviesRepository {
     List<MovieDto> getAll();
+    List<MovieDto> getSearch(@NotNull SearchCriteriaDto searchCriteria);
     Optional<Movie> getById(@NotEmpty String id);
     void save(@NotNull Movie movie);
 }

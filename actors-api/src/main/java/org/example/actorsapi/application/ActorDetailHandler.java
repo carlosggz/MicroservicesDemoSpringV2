@@ -2,6 +2,7 @@ package org.example.actorsapi.application;
 
 import an.awesome.pipelinr.Command;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.example.actorsapi.domain.actors.Actor;
 import org.example.actorsapi.domain.actors.ActorsRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class ActorDetailHandler implements Command.Handler<ActorDetailsQuery, Mo
     @Override
     public Mono<Actor> handle(@NotNull ActorDetailsQuery command) {
 
-        return Objects.isNull(command)
+        return Objects.isNull(command) || StringUtils.isBlank(command.getId())
                 ? Mono.error(new IllegalArgumentException())
                 : actorsRepository.getById(command.getId());
     }

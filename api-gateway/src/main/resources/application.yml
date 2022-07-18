@@ -1,0 +1,19 @@
+server:
+  port: 8084
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: movies_service
+          uri: ${app.movies-url}
+          predicates:
+            - Path=/api/v1/movies/**
+          filters:
+            - AddRequestHeader=X-Request-AppId, Api-Gateway
+        - id: actors_service
+          uri: ${app.actors-url}
+          predicates:
+            - Path=/api/v1/actors/**
+          filters:
+            - AddRequestHeader=X-Request-AppId, Api-Gateway

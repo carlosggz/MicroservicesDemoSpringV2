@@ -1,0 +1,8 @@
+app:
+  movies-url: http://localhost:8081
+  actors-url: http://localhost:8082
+  movies-search-path: /api/v1/movies/search
+  actor-details-path: /api/v1/actors/{ACTOR-ID}
+  timeout-seconds: 10
+  backoff-seconds: 3
+  backoff-retries: 3

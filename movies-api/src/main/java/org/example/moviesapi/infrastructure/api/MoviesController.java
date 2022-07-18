@@ -6,12 +6,16 @@ import lombok.val;
 import org.example.moviesapi.application.LikeCommand;
 import org.example.moviesapi.application.MovieDetailsQuery;
 import org.example.moviesapi.application.MoviesQuery;
+import org.example.moviesapi.application.SearchQuery;
 import org.example.moviesapi.domain.movies.Movie;
 import org.example.moviesapi.domain.movies.MovieDto;
+import org.example.moviesapi.domain.movies.SearchCriteriaDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,4 +47,8 @@ public class MoviesController {
         return result ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    @PostMapping("search")
+    public List<MovieDto> getSearch(@RequestBody SearchCriteriaDto criteriaDto) {
+        return pipeline.send(new SearchQuery(criteriaDto));
+    }
 }

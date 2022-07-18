@@ -7,8 +7,10 @@ import lombok.SneakyThrows;
 import org.example.moviesapi.application.LikeCommand;
 import org.example.moviesapi.application.MovieDetailsQuery;
 import org.example.moviesapi.application.MoviesQuery;
+import org.example.moviesapi.application.SearchQuery;
 import org.example.moviesapi.domain.movies.Movie;
 import org.example.moviesapi.domain.movies.MovieDto;
+import org.example.moviesapi.domain.movies.SearchCriteriaDto;
 import org.example.moviesapi.utils.MoviesObjectMother;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -16,6 +18,7 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -28,6 +31,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -151,5 +155,39 @@ class MoviesControllerTest {
         var command = likeCaptor.getValue();
         assertNotNull(command);
         assertEquals(id, command.getId());
+    }
+
+    @Test
+    @SneakyThrows
+    void getSearchReturnsAListOfMovies() {
+        //given
+        var dtos = List.of(
+                MoviesObjectMother.getRandomDto(),
+                MoviesObjectMother.getRandomDto(),
+                MoviesObjectMother.getRandomDto()
+        );
+        var ids = SearchCriteriaDto.builder()
+                .ids(dtos.stream().map(MovieDto::id).toList())
+                .build();
+        when(pipeline.send(any(SearchQuery.class))).thenReturn(dtos);
+
+        //when/then
+
+        var mvcResult = mockMvc
+                .perform(post("/api/v1/movies/search")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(ids)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var jsonResult = mvcResult.getResponse().getContentAsString();
+        assertNotNull(jsonResult);
+
+        var listResult = objectMapper.readValue(jsonResult, new TypeReference<List<MovieDto>>() {
+        });
+        assertNotNull(listResult);
+        assertEquals(dtos.size(), listResult.size());
+
+        listResult.forEach(r -> assertTrue(dtos.stream().anyMatch(d -> d.equals(r))));
     }
 }
