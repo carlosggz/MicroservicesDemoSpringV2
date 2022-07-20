@@ -7,7 +7,7 @@ spring:
       username: ${app.mongo.username}
       password: ${app.mongo.password}
       authentication-database: ${app.mongo.authentication-database}
-      uri: mongodb://${app.mongo.username}:${app.mongo.password}@${app.mongo.host}:${app.mongo.port}/${app.mongo.uri-suffix}
+      uri: mongodb://${app.mongo.username}:${app.mongo.password}@${app.mongo.host}:${app.mongo.port}/${app.mongo.database}${app.mongo.uri-suffix}
   rabbitmq:
     username: myuser
     password: mypass
@@ -23,7 +23,7 @@ app:
     username: myuser
     password: mypass
     authentication-database: admin
-    uri-suffix: ?retryWrites=false
+    uri-suffix: ?retryWrites=false&authSource=admin
     transaction-enabled: false
   port: 8082
   allow-swagger: true

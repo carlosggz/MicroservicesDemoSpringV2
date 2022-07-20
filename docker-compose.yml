@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres:
-    image: "postgres"
+    image: postgres:13.7
     ports:
       - "5433:5432"
     environment:
@@ -18,7 +18,7 @@ services:
       - RABBITMQ_DEFAULT_USER=myuser
       - RABBITMQ_DEFAULT_PASS=mypass
   mongo:
-    image: mongo
+    image: mongo:5.0.0
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=myuser
