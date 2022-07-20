@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: actors-api
+  cloud:
+    discovery:
+      enabled: true
+    config:
+      enabled: true
+      uri: ${CONFIG_URL:http://localhost:8084}
+      fail-fast: true
+      username: ${CONFIG_USERNAME:ConfigUser}
+      password: ${CONFIG_PASSWORD:ConfigPassword}
+
+#Eureka
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: ${EUREKA_URL:http://myuser:mypass@localhost:8761/eureka}

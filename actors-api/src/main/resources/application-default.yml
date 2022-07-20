@@ -9,27 +9,8 @@ spring:
       authentication-database: ${app.mongo.authentication-database}
       uri: mongodb://${app.mongo.username}:${app.mongo.password}@${app.mongo.host}:${app.mongo.port}/${app.mongo.database}${app.mongo.uri-suffix}
   rabbitmq:
-    username: myuser
-    password: mypass
-    host: localhost
-    port: 5672
-    virtual-host: /
-
-app:
-  mongo:
-    host: localhost
-    port: 27017
-    database: test
-    username: myuser
-    password: mypass
-    authentication-database: admin
-    uri-suffix: ?retryWrites=false&authSource=admin
-    transaction-enabled: false
-  port: 8082
-  allow-swagger: true
-  eureka:
-    host: localhost
-    port: 8761
-    username: myuser
-    password: mypass
-
+    username: ${app.rabbitmq.username}
+    password: ${app.rabbitmq.password}
+    host: ${app.rabbitmq.host}
+    port: ${app.rabbitmq.port}
+    virtual-host: ${app.rabbitmq.virtual-host}

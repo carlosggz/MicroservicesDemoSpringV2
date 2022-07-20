@@ -2,8 +2,6 @@ server:
   port: ${app.port}
 
 spring:
-  application:
-    name: movies-api
   cloud:
     stream:
       bindings:
@@ -16,16 +14,33 @@ spring:
           like-out-0:
             producer:
               routing-key-expression: headers.myRoutingKey
-
-#Eureka
-eureka:
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    service-url:
-      defaultZone: http://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
-
-spring.cloud.discovery.enabled: true
+    discovery:
+      enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${app.postgres.host}:${app.postgres.port}/${app.postgres.database}
+    username: ${app.postgres.username}
+    password: ${app.postgres.password}
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+    sql-migration-prefix: V
+    table: schema_version
+    schemas: ${app.postgres.schema}
+    init-sqls: CREATE SCHEMA IF NOT EXISTS ${app.postgres.schema};
+    fail-on-missing-locations: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: ${app.postgres.schema}
+  rabbitmq:
+    username: ${app.rabbitmq.username}
+    password: ${app.rabbitmq.password}
+    host: ${app.rabbitmq.host}
+    port: ${app.rabbitmq.port}
+    virtual-host: ${app.rabbitmq.virtual-host}
 
 #Swagger properties
 springdoc:

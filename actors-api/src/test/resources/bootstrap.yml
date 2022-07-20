@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: actors-api
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+
+#Eureka
+eureka:
+  client:
+    enabled: false

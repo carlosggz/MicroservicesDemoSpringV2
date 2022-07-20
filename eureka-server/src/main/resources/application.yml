@@ -1,12 +1,16 @@
-server.port: ${app.eureka.port}
+server.port: ${EUREKA_PORT:8761}
 
 eureka.client:
   register-with-eureka: false
   fetch-registry: false
   service-url:
-    defaultZone: http://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
+    defaultZone: ${EUREKA_URL:http://myuser:mypass@localhost:8761/eureka}
+
 spring:
   security:
     user:
-      name: ${app.eureka.username}
-      password: ${app.eureka.password}
+      name: ${EUREKA_USERNAME:myuser}
+      password: ${EUREKA_PASSWORD:mypass}
+  application:
+    name: eureka-server
+

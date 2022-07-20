@@ -2,8 +2,6 @@ server:
   port: ${app.port}
 
 spring:
-  application:
-    name: actors-api
   main:
     allow-bean-definition-overriding: true
   cloud:
@@ -35,16 +33,6 @@ springdoc:
 mongock:
   enabled: true
   migration-scan-package: org.example.actorsapi.infrastructure.migrations
-
-#Eureka
-eureka:
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    service-url:
-      defaultZone: http://${app.eureka.username}:${app.eureka.password}@${app.eureka.host}:${app.eureka.port}/eureka
-
-spring.cloud.discovery.enabled: true
 
 #App properties
 app:

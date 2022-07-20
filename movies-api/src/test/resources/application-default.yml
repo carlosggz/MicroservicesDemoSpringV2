@@ -12,16 +12,19 @@ spring:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
 
-eureka:
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
-
 app:
   port: 8081
   allow-swagger: false
-  eureka:
+  postgres:
     host: localhost
-    port: 1234
-    username: test
-    password: test
+    port: 5433
+    database: testdb
+    schema:
+    username: sa
+    password:
+  rabbitmq:
+    username: user
+    password: password
+    host: localhost
+    port: 5672
+    virtual-host: /
