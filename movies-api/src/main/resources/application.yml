@@ -41,6 +41,9 @@ spring:
     host: ${app.rabbitmq.host}
     port: ${app.rabbitmq.port}
     virtual-host: ${app.rabbitmq.virtual-host}
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:true}
+    base-url: ${ZIPKIN_URL:http://localhost:9411/}
 
 #Swagger properties
 springdoc:

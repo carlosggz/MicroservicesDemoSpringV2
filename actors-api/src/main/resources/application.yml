@@ -19,6 +19,9 @@ spring:
           likeListener-in-0:
             consumer:
               bindingRoutingKey: movie.like
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:true}
+    base-url: ${ZIPKIN_URL:http://localhost:9411/}
 
 #Swagger properties
 springdoc:

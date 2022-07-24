@@ -25,3 +25,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=mypass
     ports:
       - "27017:27017"
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - '9411:9411'

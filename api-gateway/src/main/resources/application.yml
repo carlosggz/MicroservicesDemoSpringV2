@@ -20,3 +20,6 @@ spring:
       discovery:
         locator:
           enabled: true
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    base-url: ${ZIPKIN_URL:http://localhost:9411/}

@@ -5,6 +5,8 @@ spring:
   mongodb:
     embedded:
       version: 5.0.6
+  zipkin:
+    enabled: false
 
 app:
   port: 8082

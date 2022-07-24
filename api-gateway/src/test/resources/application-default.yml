@@ -1,6 +1,8 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+  zipkin:
+    enabled: false
 
 app:
   test: true
