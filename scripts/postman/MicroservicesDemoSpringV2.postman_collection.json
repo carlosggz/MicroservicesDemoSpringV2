@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "d6e7dbda-5fa4-477a-a7af-431ad7fc9b34",
+		"name": "Spring Microservices Demo V2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "296286"
+	},
+	"item": [
+		{
+			"name": "Api Gateway",
+			"item": [
+				{
+					"name": "1. Invalid login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Unauthorized status\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"demo-user\",\r\n    \"password\": \"demo-pass1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/gateway/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"gateway",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.Valid login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"OK status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Access token is present\", function () {\r",
+									"    const result = pm.response.json();\r",
+									"    pm.expect(result).not.eq(null);\r",
+									"    pm.expect(result?.access_token).is.not.oneOf([null, undefined])\r",
+									"    pm.expect(result?.access_token.trim().length).to.be.greaterThan(0)\r",
+									"\r",
+									"    pm.environment.set(\"access_token\", result?.access_token)\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"demo-user\",\r\n    \"password\": \"demo-pass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/api/gateway/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"api",
+								"gateway",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.Get actor details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ok status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Details are returned\", function () {\r",
+									"    const result = pm.response.json();\r",
+									"    pm.expect(result).not.eq(null);\r",
+									"    pm.expect(result?.id).to.be.eql('KENOBI'); \r",
+									"    pm.expect(result?.firstName).to.be.eql('Ewan'); \r",
+									"    pm.expect(result?.lastName).to.be.eql('McGregor'); \r",
+									"    pm.expect(result?.character).to.be.eql('Obi-Wan Kenobi'); \r",
+									"    pm.expect(result?.movies?.length).to.be.eql(3); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/api/gateway/actor/KENOBI",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"api",
+								"gateway",
+								"actor",
+								"KENOBI"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actors api",
+			"item": [
+				{
+					"name": "Get list of actors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ok status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"A list of actors is returned\", function () {\r",
+									"    const result = pm.response.json();\r",
+									"    pm.expect(result).not.eq(null);\r",
+									"    pm.expect(result?.length).to.be.eql(14); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/api/v1/actors",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get actor details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ok status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Details are returned\", function () {\r",
+									"    const result = pm.response.json();\r",
+									"    pm.expect(result).not.eq(null);\r",
+									"    pm.expect(result?.id).to.be.eql('KENOBI'); \r",
+									"    pm.expect(result?.firstName).to.be.eql('Ewan'); \r",
+									"    pm.expect(result?.lastName).to.be.eql('McGregor'); \r",
+									"    pm.expect(result?.character).to.be.eql('Obi-Wan Kenobi'); \r",
+									"    pm.expect(result?.movies?.length).to.be.eql(3); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/api/v1/actors/KENOBI",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"actors",
+								"KENOBI"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movies api",
+			"item": [
+				{
+					"name": "Get list of movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ok status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"A list of movies is returned\", function () {\r",
+									"    const result = pm.response.json();\r",
+									"    pm.expect(result).not.eq(null);\r",
+									"    pm.expect(result?.length).to.be.eql(11); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/api/v1/movies",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get movie details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ok status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Details are returned\", function () {\r",
+									"    const result = pm.response.json();\r",
+									"    pm.expect(result).not.eq(null);\r",
+									"    pm.expect(result?.id).to.be.eql('SWV'); \r",
+									"    pm.expect(result?.title).to.be.eql('Star wars V: The empire strikes back'); \r",
+									"    pm.expect(result?.imdb).to.be.eql('tt0080684'); \r",
+									"    pm.expect(result?.releaseYear).to.be.eql(1980);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/api/v1/movies/SWV",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"movies",
+								"SWV"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add like",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ok status\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/api/v1/movies/like/SWV",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"movies",
+								"like",
+								"SWV"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

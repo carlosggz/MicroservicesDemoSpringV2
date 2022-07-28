@@ -1,9 +1,9 @@
 package com.example.apigateway.infrastructure.components;
 
-import com.example.apigateway.domain.AppSettings;
-import com.example.apigateway.domain.Movie;
-import com.example.apigateway.domain.SearchCriteriaDto;
 import com.example.apigateway.domain.components.MovieComponent;
+import com.example.apigateway.domain.dtos.SearchCriteriaDto;
+import com.example.apigateway.domain.models.Movie;
+import com.example.apigateway.domain.settings.AppSettings;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;

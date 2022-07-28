@@ -20,4 +20,10 @@ public class WebclientsTestConfiguration {
                 .baseUrl("http://localhost:8888")
                 .build();
     }
+
+    @Bean
+    public WebClient authWebClient() {
+        return WebClient.builder()
+                .build();
+    }
 }

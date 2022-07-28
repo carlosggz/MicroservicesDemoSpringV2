@@ -1,15 +1,16 @@
 package com.example.apigateway.application;
 
 import an.awesome.pipelinr.Command;
-import com.example.apigateway.domain.Actor;
-import com.example.apigateway.domain.ActorDetails;
-import com.example.apigateway.domain.AppSettings;
-import com.example.apigateway.domain.Movie;
 import com.example.apigateway.domain.components.ActorComponent;
 import com.example.apigateway.domain.components.MovieComponent;
+import com.example.apigateway.domain.models.Actor;
+import com.example.apigateway.domain.models.ActorDetails;
+import com.example.apigateway.domain.models.Movie;
+import com.example.apigateway.domain.settings.AppSettings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -19,7 +20,6 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class ActorDetailHandler implements Command.Handler<ActorDetailsQuery, Mo
                         .backoff(appSettings.getBackoffRetries(), Duration.ofSeconds(appSettings.getBackoffSeconds()))
                         .onRetryExhaustedThrow((spec, signal) -> {
                             log.error("Error obtaining data top build response: {}", signal.failure().getMessage());
-                            return new TimeoutException("Timeout generating response ");
+                            return new HttpException(signal.failure().getMessage());
                         })
                 );
     }

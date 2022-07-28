@@ -6,26 +6,41 @@ services:
     ports:
       - "5433:5432"
     environment:
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypass
-      - POSTGRES_DB=postgres
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: postgres
   rabbitmq:
     image: rabbitmq:3.8.5-management-alpine
     ports:
       - '5672:5672'
       - '15672:15672'
     environment:
-      - RABBITMQ_DEFAULT_USER=myuser
-      - RABBITMQ_DEFAULT_PASS=mypass
+      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: mypass
   mongo:
     image: mongo:5.0.0
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=myuser
-      - MONGO_INITDB_ROOT_PASSWORD=mypass
+      MONGO_INITDB_ROOT_USERNAME: myuser
+      MONGO_INITDB_ROOT_PASSWORD: mypass
     ports:
       - "27017:27017"
   zipkin:
     image: openzipkin/zipkin
     ports:
       - '9411:9411'
+  auth:
+    image: quay.io/keycloak/keycloak:18.0
+    container_name: keycloack-auth
+    ports:
+      - "9000:8080"
+    environment:
+      KEYCLOAK_ADMIN: myuser
+      KEYCLOAK_ADMIN_PASSWORD: mypass
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - ./scripts/auth/realm.json:/opt/keycloak/data/import/realm.json
+      - ./scripts/auth/add-user.sh:/opt/add-user.sh
+

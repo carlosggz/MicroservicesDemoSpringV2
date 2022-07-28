@@ -1,7 +1,8 @@
 package com.example.apigateway.application;
 
 import an.awesome.pipelinr.Command;
-import com.example.apigateway.domain.models.ActorDetails;
+import com.example.apigateway.domain.dtos.LoginRequestDto;
+import com.example.apigateway.domain.dtos.LoginResponseDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
@@ -9,9 +10,9 @@ import reactor.core.publisher.Mono;
 import javax.validation.constraints.NotEmpty;
 
 @RequiredArgsConstructor
-public class ActorDetailsQuery implements Command<Mono<ActorDetails>> {
+public class LoginQuery implements Command<Mono<LoginResponseDto>> {
 
     @NotEmpty
     @Getter
-    final String id;
+    final LoginRequestDto loginRequestDto;
 }

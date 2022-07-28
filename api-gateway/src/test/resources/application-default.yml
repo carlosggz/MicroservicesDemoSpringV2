@@ -11,6 +11,16 @@ app:
   movies-search-path: /api/v1/movies/search
   actor-details-path: /api/v1/actors/{ACTOR-ID}
   timeout-seconds: 10
-  backoff-seconds: 3
-  backoff-retries: 3
+  backoff-seconds: 1
+  backoff-retries: 1
   port: 8083
+  auth:
+    client-id: client-id
+    client-secret: client-secret
+    auth-url: http://${app.auth.host}:${app.auth.port}/realms/${app.auth.realm}/protocol/openid-connect/token
+    issuer-uri: http://${app.auth.host}:${app.auth.port}/realms/${app.auth.realm}
+    grant-type: password
+    scope: profile
+    realm: my-realm
+    host: localhost
+    port: 8888

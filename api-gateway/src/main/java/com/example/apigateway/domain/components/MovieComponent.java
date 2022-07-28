@@ -1,6 +1,6 @@
 package com.example.apigateway.domain.components;
 
-import com.example.apigateway.domain.Movie;
+import com.example.apigateway.domain.models.Movie;
 import reactor.core.publisher.Flux;
 
 import javax.validation.constraints.NotNull;

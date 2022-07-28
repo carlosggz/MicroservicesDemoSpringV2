@@ -2,12 +2,19 @@ package com.example.apigateway.infrastructure.api;
 
 import an.awesome.pipelinr.Pipeline;
 import com.example.apigateway.application.ActorDetailsQuery;
-import com.example.apigateway.domain.ActorDetails;
-import com.example.apigateway.domain.Movie;
+import com.example.apigateway.application.LoginQuery;
+import com.example.apigateway.domain.dtos.LoginRequestDto;
+import com.example.apigateway.domain.dtos.LoginResponseDto;
+import com.example.apigateway.domain.models.ActorDetails;
+import com.example.apigateway.domain.models.Movie;
+import com.example.apigateway.infrastructure.config.SecurityConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest(controllers = GatewayController.class)
+@Import(SecurityConfiguration.class)
 class GatewayControllerTest {
 
     @Autowired
@@ -27,6 +35,7 @@ class GatewayControllerTest {
     Pipeline pipeline;
 
     @Test
+    @WithMockUser
     void getActorDetailsReturnsTheAggregation() {
         //given
         var expectedResult = ActorDetails.builder()
@@ -53,4 +62,32 @@ class GatewayControllerTest {
 
     }
 
+    @Test
+    void loginReturnsCredentials() {
+        //given
+        var credentials = new LoginRequestDto("user", "password");
+        var expectedResult = LoginResponseDto.builder()
+                .accessToken("access-token")
+                .expiresIn(123)
+                .refreshExpiresIn(456)
+                .refreshToken("refresh-token")
+                .scope("scope")
+                .tokenType("token-type")
+                .build();
+        when(pipeline.send(any(LoginQuery.class))).thenReturn(Mono.just(expectedResult));
+
+        //when/then
+        var result = webClient
+                .post()
+                .uri("/api/gateway/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(credentials)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(LoginResponseDto.class)
+                .returnResult();
+
+        var returnedCredentials = result.getResponseBody();
+        assertEquals(expectedResult, returnedCredentials);
+    }
 }

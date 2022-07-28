@@ -1,7 +1,7 @@
 package com.example.apigateway.infrastructure.components;
 
-import com.example.apigateway.domain.Actor;
-import com.example.apigateway.domain.AppSettings;
+import com.example.apigateway.domain.models.Actor;
+import com.example.apigateway.domain.settings.AppSettings;
 import com.example.apigateway.utils.BaseIntegrationTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;

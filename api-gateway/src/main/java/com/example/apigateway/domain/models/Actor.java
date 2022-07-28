@@ -1,4 +1,4 @@
-package com.example.apigateway.domain;
+package com.example.apigateway.domain.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.example.apigateway.infrastructure.config;
 
-import com.example.apigateway.domain.AppSettings;
+import com.example.apigateway.domain.settings.AppSettings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -34,6 +34,12 @@ public class ApplicationConfiguration {
         return WebClient.builder()
                 .filter(lbFunction)
                 .baseUrl("http://" + appSettings.getActorsService())
+                .build();
+    }
+
+    @Bean
+    public WebClient authWebClient() {
+        return WebClient.builder()
                 .build();
     }
 }

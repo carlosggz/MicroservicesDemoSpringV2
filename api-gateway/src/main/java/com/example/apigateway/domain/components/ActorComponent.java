@@ -1,6 +1,6 @@
 package com.example.apigateway.domain.components;
 
-import com.example.apigateway.domain.Actor;
+import com.example.apigateway.domain.models.Actor;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotBlank;

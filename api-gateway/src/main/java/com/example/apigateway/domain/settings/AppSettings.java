@@ -1,4 +1,4 @@
-package com.example.apigateway.domain;
+package com.example.apigateway.domain.settings;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
