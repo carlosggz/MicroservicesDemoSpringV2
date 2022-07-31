@@ -37,12 +37,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8083/api/gateway/login",
-							"protocol": "http",
+							"raw": "{{api_gateway}}/api/gateway/login",
 							"host": [
-								"localhost"
+								"{{api_gateway}}"
 							],
-							"port": "8083",
 							"path": [
 								"api",
 								"gateway",
@@ -89,12 +87,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8083/api/gateway/login",
-							"protocol": "http",
+							"raw": "{{api_gateway}}/api/gateway/login",
 							"host": [
-								"localhost"
+								"{{api_gateway}}"
 							],
-							"port": "8083",
 							"path": [
 								"api",
 								"gateway",
@@ -152,6 +148,25 @@
 								"gateway",
 								"actor",
 								"KENOBI"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway}}/api/gateway/ping",
+							"host": [
+								"{{api_gateway}}"
+							],
+							"path": [
+								"api",
+								"gateway",
+								"ping"
 							]
 						}
 					},
@@ -414,6 +429,64 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "auth token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "demo-client",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "this-is-my-secret",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "demo-user",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "demo-pass",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "profile",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:9000/realms/demo-realm/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"realms",
+						"demo-realm",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

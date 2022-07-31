@@ -1,0 +1,7 @@
+app:
+  config:
+    port: 8084
+    username: ConfigUser
+    password: ConfigPassword
+  eureka:
+    url: http://myuser:mypass@eureka-server:8761/eureka

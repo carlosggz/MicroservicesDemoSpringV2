@@ -1,0 +1,6 @@
+app:
+  eureka:
+    port: 8761
+    url: http://myuser:mypass@localhost:8761/eureka
+    username: myuser
+    password: mypass

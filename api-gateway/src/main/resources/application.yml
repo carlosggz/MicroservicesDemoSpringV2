@@ -23,8 +23,8 @@ spring:
         locator:
           enabled: true
   zipkin:
-    enabled: ${ZIPKIN_ENABLED:false}
-    base-url: ${ZIPKIN_URL:http://localhost:9411/}
+    enabled: ${app.zipkin.enabled}
+    base-url: ${app.zipkin.url}
   security:
     oauth2:
       resourceserver:

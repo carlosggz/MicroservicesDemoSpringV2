@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/gateway")
@@ -43,5 +44,10 @@ public class GatewayController {
                 .onErrorMap(e -> new ResponseStatusException(e instanceof WebClientResponseException.Unauthorized
                         ? HttpStatus.UNAUTHORIZED
                         : HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("/ping")
+    public Mono<String> ping() {
+        return Mono.just("Welcome to Api Gateway - " + LocalDateTime.now());
     }
 }

@@ -15,7 +15,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
         http.securityMatcher(new NegatedServerWebExchangeMatcher(
-                ServerWebExchangeMatchers.pathMatchers("/api/gateway/login")));
+                ServerWebExchangeMatchers.pathMatchers("/api/gateway/login", "/api/gateway/ping")));
         http.authorizeExchange().anyExchange().authenticated()
                 .and()
                 .oauth2ResourceServer().jwt();

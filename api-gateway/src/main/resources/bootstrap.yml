@@ -6,10 +6,10 @@ spring:
       enabled: true
     config:
       enabled: true
-      uri: ${CONFIG_URL:http://localhost:8084}
+      uri: ${app.config-server.url}
       fail-fast: true
-      username: ${CONFIG_USERNAME:ConfigUser}
-      password: ${CONFIG_PASSWORD:ConfigPassword}
+      username: ${app.config-server.username}
+      password: ${app.config-server.password}
 
 #Eureka
 eureka:
@@ -17,4 +17,4 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     service-url:
-      defaultZone: ${EUREKA_URL:http://myuser:mypass@localhost:8761/eureka}
+      defaultZone: ${app.eureka.url}

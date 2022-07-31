@@ -1,0 +1,7 @@
+app:
+  config-server:
+    username: ConfigUser
+    password: ConfigPassword
+    url: http://config-server:8084
+  eureka:
+    url: http://myuser:mypass@eureka-server:8761/eureka

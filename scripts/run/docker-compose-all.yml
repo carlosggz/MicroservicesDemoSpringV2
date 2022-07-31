@@ -1,0 +1,130 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:13.7
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: postgres
+    networks:
+      - my-network
+  rabbitmq:
+    image: rabbitmq:3.8.5-management-alpine
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: mypass
+    networks:
+      - my-network
+  mongo:
+    image: mongo:5.0.0
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: myuser
+      MONGO_INITDB_ROOT_PASSWORD: mypass
+    ports:
+      - "27017:27017"
+    networks:
+      - my-network
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - '9411:9411'
+    networks:
+      - my-network
+  auth:
+    image: quay.io/keycloak/keycloak:18.0
+    container_name: keycloack-auth
+    ports:
+      - "9009:8080"
+    environment:
+      KEYCLOAK_ADMIN: myuser
+      KEYCLOAK_ADMIN_PASSWORD: mypass
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - ../auth/realm.json:/opt/keycloak/data/import/realm.json
+      - ../auth/add-user.sh:/opt/add-user.sh
+    networks:
+      - my-network
+  eureka-server:
+    image: openjdk:17
+    volumes:
+      - ./eureka-server.jar:/app.jar
+    entrypoint: java -jar /app.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    networks:
+      - my-network
+    ports:
+      - '8761:8761'
+    restart: unless-stopped
+  config-server:
+    image: openjdk:17
+    volumes:
+      - ./config-server.jar:/app.jar
+    entrypoint: java -jar /app.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    networks:
+      - my-network
+    ports:
+      - '8084:8084'
+    restart: unless-stopped
+  movies-api:
+    image: openjdk:17
+    volumes:
+      - ./movies-api.jar:/app.jar
+    entrypoint: java -jar /app.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    depends_on:
+      - eureka-server
+      - config-server
+    networks:
+      - my-network
+    ports:
+      - '8081:8081'
+    restart: unless-stopped
+  actors-api:
+    image: openjdk:17
+    volumes:
+      - ./actors-api.jar:/app.jar
+    entrypoint: java -jar /app.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    depends_on:
+      - eureka-server
+      - config-server
+    networks:
+      - my-network
+    ports:
+      - '8082:8082'
+    restart: unless-stopped
+  api-gateway:
+    image: openjdk:17
+    volumes:
+      - ./api-gateway.jar:/app.jar
+    entrypoint: java -jar /app.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+    depends_on:
+      - eureka-server
+      - config-server
+      - movies-api
+      - actors-api
+    networks:
+      - my-network
+    ports:
+      - '8083:8083'
+    restart: unless-stopped
+
+networks:
+  my-network:
+    driver: bridge

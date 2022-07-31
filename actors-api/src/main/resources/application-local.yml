@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      host: ${app.mongo.host}
+      port: ${app.mongo.port}
+      database: ${app.mongo.database}
+      username: ${app.mongo.username}
+      password: ${app.mongo.password}
+      authentication-database: ${app.mongo.authentication-database}
+      uri: mongodb://${app.mongo.username}:${app.mongo.password}@${app.mongo.host}:${app.mongo.port}/${app.mongo.database}${app.mongo.uri-suffix}
+  rabbitmq:
+    username: ${app.rabbitmq.username}
+    password: ${app.rabbitmq.password}
+    host: ${app.rabbitmq.host}
+    port: ${app.rabbitmq.port}
+    virtual-host: ${app.rabbitmq.virtual-host}

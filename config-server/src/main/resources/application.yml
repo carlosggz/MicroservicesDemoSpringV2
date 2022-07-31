@@ -1,13 +1,13 @@
 server:
-  port: ${CONFIG_PORT:8084}
+  port: ${app.config.port}
 
 spring:
   application:
     name: config-server
   security:
     user:
-      name: ${CONFIG_USERNAME:ConfigUser}
-      password: ${CONFIG_PASSWORD:ConfigPassword}
+      name: ${app.config.username}
+      password: ${app.config.password}
   cloud:
     discovery:
       enabled: true
@@ -23,4 +23,4 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     service-url:
-      defaultZone: ${EUREKA_URL:http://myuser:mypass@localhost:8761/eureka}
+      defaultZone: ${app.eureka.url}
