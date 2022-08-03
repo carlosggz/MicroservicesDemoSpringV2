@@ -1,19 +1,21 @@
 package org.example.actorsapi.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.AMQP;
 import lombok.SneakyThrows;
 import org.example.actorsapi.application.LikeHandler;
 import org.example.actorsapi.domain.events.LikeMovieEvent;
-import org.example.actorsapi.infrastructure.crud.ActorsCrudRepository;
+import org.example.actorsapi.infrastructure.config.MessagingProperties;
 import org.example.actorsapi.infrastructure.mappers.ActorMapper;
 import org.example.actorsapi.utils.ActorsObjectMother;
+import org.example.actorsapi.utils.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.binder.test.InputDestination;
-import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
-import org.springframework.context.annotation.Import;
-import org.springframework.messaging.support.MessageBuilder;
+import reactor.core.publisher.Mono;
+import reactor.rabbitmq.OutboundMessage;
+import reactor.rabbitmq.Sender;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -21,20 +23,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(properties = "spring.cloud.stream.bindings.likeListener-in-0.destination=test-topic")
-@Import(TestChannelBinderConfiguration.class)
-class LikeHandlerIntegrationTest {
-    public static final String ROUTING_HEADER = "myRoutingKey";
-    public static final String ROUTING_KEY = "movie.like";
-    public static final String TOPIC_NAME = "test-topic";
+class LikeHandlerIntegrationTest extends BaseIntegrationTest {
     @Autowired
-    ActorsCrudRepository crudRepository;
+    MessagingProperties messagingProperties;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Autowired
+    Sender sender;
 
     @Autowired
     LikeHandler handler;
-
-    @Autowired
-    InputDestination inputDestination;
 
     @Test
     @SneakyThrows
@@ -49,16 +49,9 @@ class LikeHandlerIntegrationTest {
                 .peek(x -> x.setMovies(Set.of(movieId)))
                 .peek(x -> crudRepository.save(ActorMapper.INSTANCE.toEntity(x)).block())
                 .toList();
-        var event = LikeMovieEvent.builder()
-                .aggregateRootId(movieId)
-                .build();
-        var message = MessageBuilder
-                .withPayload(event)
-                .setHeader(ROUTING_HEADER, ROUTING_KEY)
-                .build();
 
         //when
-        inputDestination.send(message, TOPIC_NAME);
+        sendMessage(movieId);
         Thread.sleep(500);
 
         //then
@@ -74,6 +67,25 @@ class LikeHandlerIntegrationTest {
                     s.setLikes(0);
                     assertTrue(actors.stream().anyMatch(a -> a.equals(s)));
                 });
+    }
+
+    @SneakyThrows
+    private void sendMessage(String movieId) {
+        var event = LikeMovieEvent.builder()
+                .aggregateRootId(movieId)
+                .build();
+        var properties = new AMQP.BasicProperties.Builder()
+                .headers(Map.of())
+                .build();
+        var body = objectMapper.writeValueAsBytes(event);
+        var message = new OutboundMessage(
+                messagingProperties.getExchangeName(), messagingProperties.getRoutingKey(), properties, body);
+
+        Mono
+                .just(message)
+                .transform(sender::send)
+                .then()
+                .block();
     }
 
 }

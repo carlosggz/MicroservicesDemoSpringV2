@@ -1,10 +1,9 @@
 package org.example.actorsapi;
 
+import org.example.actorsapi.utils.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class ActorsApiApplicationTests {
+class ActorsApiApplicationTests extends BaseIntegrationTest {
 
     @Test
     void contextLoads() {

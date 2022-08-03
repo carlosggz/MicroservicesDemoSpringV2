@@ -2,28 +2,16 @@ package org.example.actorsapi.integration;
 
 import org.example.actorsapi.application.ActorDetailHandler;
 import org.example.actorsapi.application.ActorDetailsQuery;
-import org.example.actorsapi.infrastructure.crud.ActorsCrudRepository;
 import org.example.actorsapi.infrastructure.mappers.ActorMapper;
 import org.example.actorsapi.utils.ActorsObjectMother;
-import org.junit.jupiter.api.BeforeEach;
+import org.example.actorsapi.utils.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
 
-@SpringBootTest
-class ActorDetailHandlerIntegrationTest {
-
-    @Autowired
-    ActorsCrudRepository crudRepository;
-
+class ActorDetailHandlerIntegrationTest extends BaseIntegrationTest {
     @Autowired
     ActorDetailHandler handler;
-
-    @BeforeEach
-    void setup() {
-        crudRepository.deleteAll().block();
-    }
 
     @Test
     void getActorWithInvalidIdReturnsEmpty() {

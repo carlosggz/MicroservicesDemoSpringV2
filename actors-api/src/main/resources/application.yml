@@ -4,21 +4,6 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
-  cloud:
-    stream:
-      function:
-        definition: likeListener
-      bindings:
-        likeListener-in-0:
-          destination: movies-topic
-          group: ${spring.application.name}
-          consumer:
-            concurrency: 5
-      rabbit:
-        bindings:
-          likeListener-in-0:
-            consumer:
-              bindingRoutingKey: movie.like
   zipkin:
     enabled: ${app.zipkin.enabled}
     base-url: ${app.zipkin.url}
@@ -41,7 +26,11 @@ mongock:
 app:
   security:
     ignore-paths: /swagger/**,/v3/api-docs/**
-
+  messaging:
+    exchange-name: movies-topic
+    exchange-type: topic
+    routing-key: movie.like
+    queue-name: movies-topic.${spring.application.name}
 
 
 
