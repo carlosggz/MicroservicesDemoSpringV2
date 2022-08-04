@@ -14,8 +14,10 @@ spring:
     config:
       server:
         git:
+          default-label: master
           uri: https://github.com/carlosggz/config-server-demo
           searchPaths: .,{application}
+          clone-on-start: true
 
 #Eureka
 eureka:
@@ -24,3 +26,9 @@ eureka:
     fetchRegistry: true
     service-url:
       defaultZone: ${app.eureka.url}
+
+#Encryption properties
+encrypt:
+  key: MySuperSecretKey
+  salt: abcdef
+
